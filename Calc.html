@@ -1,0 +1,113 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Measurement Calculator</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+    }
+    .container {
+        max-width: 400px;
+        margin: 0 auto;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+    input[type="number"] {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+    }
+    button {
+        width: 100%;
+        padding: 10px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    button:hover {
+        background-color: #0056b3;
+    }
+    .result {
+        margin-top: 20px;
+        font-weight: bold;
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Measurement Calculator</h2>
+    <label for="limit">Enter the Total Number of Measurements:</label>
+    <input type="number" id="limit" name="limit">
+
+    <div id="measurementInputs"></div>
+
+    <button onclick="calculatePrice()">Calculate</button>
+
+    <div id="measurements" class="measurements"></div>
+    <div id="result" class="result"></div>
+</div>
+
+<script>
+function addMeasurementInputs() {
+    var limit = document.getElementById("limit").value;
+    var measurementInputs = document.getElementById("measurementInputs");
+    measurementInputs.innerHTML = "";
+
+    for (var i = 1; i <= limit; i++) {
+        var input1 = document.createElement("input");
+        input1.type = "number";
+        input1.placeholder = "Enter 1st Number";
+        input1.className = "measurement";
+        measurementInputs.appendChild(input1);
+
+        var input2 = document.createElement("input");
+        input2.type = "number";
+        input2.placeholder = "Enter 2nd Number";
+        input2.className = "measurement";
+        measurementInputs.appendChild(input2);
+
+        measurementInputs.appendChild(document.createElement("br"));
+    }
+}
+
+function calculatePrice() {
+    var sum = 0;
+    var price = 0;
+    var measurements = document.getElementsByClassName("measurement");
+    var measurementsDiv = document.getElementById("measurements");
+
+    measurementsDiv.innerHTML = "";
+    
+    for (var i = 0; i < measurements.length; i += 2) {
+        var side1 = parseFloat(measurements[i].value);
+        var side2 = parseFloat(measurements[i + 1].value);
+
+        var sideM = side1 * side2;
+        var sqfeet = sideM * 10.7639;
+
+        sum += sqfeet;
+
+        var measurementText = "Measurement " + ((i / 2) + 1) + ": " + sqfeet.toFixed(2) + " sq feet<br>";
+        measurementsDiv.innerHTML += measurementText;
+    }
+
+    price = sum * 130;
+
+    document.getElementById("result").innerHTML = "Total Sum of Measurements: " + sum.toFixed(2) + " sq feet<br>Total Price: " + price.toFixed(2);
+}
+
+document.getElementById("limit").addEventListener("change", addMeasurementInputs);
+</script>
+
+</body>
+</html>
